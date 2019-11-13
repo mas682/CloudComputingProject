@@ -1,13 +1,8 @@
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.io.ObjectInputStream;
 import java.util.*;
 
 public class HadoopClient extends Client {
 
-	private static Scanner scan = new Scanner(System.in);
 
 	public HadoopClient(String name, int port)
 	{
@@ -25,7 +20,7 @@ public class HadoopClient extends Client {
 			output.writeObject(message);
 
 			response = (Envelope)input.readObject();
-			if(response.getMessage().equals("DONE"))
+			if(response.getMessage().equals("INITIALIZED"))
 			{
 				return true;
 			}
@@ -39,7 +34,7 @@ public class HadoopClient extends Client {
 		}
 	}
 
-	 public boolean search(String term)
+	 public String search(String term)
 	 {
 		 try
 			{
@@ -54,20 +49,20 @@ public class HadoopClient extends Client {
 				//If server indicates success, return true
 				if(response.getMessage().equals("RESULTS"))
 				{
-					return true;
+					return (String)response.getObjContents().get(0);
 				}
 
-				return false;
+				return null;
 			}
 			catch(Exception e)
 			{
 				System.err.println("Error: " + e.getMessage());
 				e.printStackTrace(System.err);
-				return false;
+				return null;
 			}
 	 }
 
-	public boolean getTopN(int num)
+	public ArrayList<String> getTopN(int num)
 	{
 		try
 		   {
@@ -82,7 +77,7 @@ public class HadoopClient extends Client {
 			   //If server indicates success, return true
 			   if(response.getMessage().equals("RESULTS"))
 			   {
-				   return response.getObjContents().get(0);
+				   return (ArrayList<String>)response.getObjContents().get(0);
 			   }
 			   return null;
 		   }
@@ -90,7 +85,7 @@ public class HadoopClient extends Client {
 		   {
 			   System.err.println("Error: " + e.getMessage());
 			   e.printStackTrace(System.err);
-			   return false;
+			   return null;
 		   }
 	}
 

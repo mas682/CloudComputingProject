@@ -55,7 +55,7 @@ public class UserApp {
 
             switch (selection) {
                 case 1:
-                    constructIndicies();
+                    selection = constructIndicies();
                     break;
                 case 0:
                     quit();
@@ -68,7 +68,7 @@ public class UserApp {
     }
 
 
-	public static void constructIndicies()
+	public static int constructIndicies()
 	{
 		 int selection = -1;
         // let hadoop construct the indicies first..
@@ -100,11 +100,13 @@ public class UserApp {
 					break;
                 case 0:
                     quit();
+                    break;
                 default:
                     // Invalid, just ignore and let loop again
                     break;
             }//end of switch
         }//end of while loop
+        return selection;
 
 	}//end of userOptions method
 
@@ -115,16 +117,35 @@ public class UserApp {
 	 */
 	public static void searchTerm()
 	{
-		System.out.print("Enter the term to search for: ");
-		String term = input.nextLine();
-		boolean results = hadoopServ.search(term);
-		if(!results)
+		boolean validInput = false;
+		String term = "";
+		while(!validInput)
+		{
+			System.out.print("Enter the term to search for: ");
+			term = input.nextLine();
+			// a simple check to see if multiple terms were entered
+			// to keep the system from crashing
+			String [] check = term.split(" ");
+			if(check.length > 1)
+			{
+				System.out.println("You can only search for one term in this application.");
+				validInput = false;
+			}
+			else
+			{
+				validInput = true;
+			}
+		}
+		System.out.println("Please wait while your results are gathered...\n");
+		String results = hadoopServ.search(term);
+		if(results == null || results.equals(""))
 		{
 			System.out.println("The term did not exist within the files");
 		}
 		else
 		{
 			System.out.println("The results were generated");
+			System.out.println(results);
 		}
 	}
 
@@ -133,20 +154,32 @@ public class UserApp {
 	 */
 	 public static void topN()
 	 {
-		 System.out.print("Enter a number for the top N terms you would like:");
-         String number = input.nextLine();
-         int n = Integer.parseInt(number);
+		 int n = -1;
+		 while (n <= 0) {
+			 System.out.print("Enter a number for the top N terms you would like: ");
+			 try {
+				 n = input.nextInt();
+			 } catch (NoSuchElementException e) {
+				 System.out.println("You must enter a number greater than 0");
+				 n= -1;
+	         } catch (IllegalStateException e) {
+	        	 System.out.println("You must enter a number greater than 0");
+	        	 n = -1;
+	         }
+			 input.nextLine();
+		 }
+         System.out.println("Please wait while your results are gathered...\n");
 		 ArrayList<String> results = hadoopServ.getTopN(n);
 		 if(results == null)
 		 {
-			 System.out.println("Unable to get the Top-N results.");
+			 System.out.println("Unable to get the Top-" + n + " results.");
 		 }
 		 else
 		 {
-			 System.out.println("The Top-N results have been generated.");
+			 System.out.println("The Top-" + n + " results have been generated:");
              for(int i = 0; i < n; i++)
              {
-                System.out.println(results.get(i));
+                System.out.println("\t" + (i+1) + ". " + results.get(i));
              }
 		 }
 	 }
