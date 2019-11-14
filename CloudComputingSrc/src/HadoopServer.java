@@ -1,6 +1,7 @@
 
 
 import java.net.ServerSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.io.*;
 import java.util.*;
@@ -27,7 +28,11 @@ public class HadoopServer extends Server {
 		try
 		{
 			final ServerSocket serverSock = new ServerSocket(port);
-
+			System.out.println(serverSock.toString());
+			System.out.println(serverSock.getInetAddress());
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
+            System.out.println(InetAddress.getLocalHost().getHostName());
+			
 			Socket sock = null;
 			Thread thread = null;
 			while(true)

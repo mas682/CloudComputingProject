@@ -224,7 +224,14 @@ public static class IntSumCombiner
     {
     	if(term != null)
     	{
-    		context.write(term, new Text(result.toString()));
+    		String output = "";
+  		  	DocFreqPair temp = null;
+  		  	for(int i = 0; i < result.size(); i++)
+  		  	{
+  		  		temp = result.get(i);
+  		  		output = output.concat(temp.getDoc() + " " + temp.getFreq() + " ");
+  		  	}
+  		  	context.write(term,  new Text(output));
     	}
     }
   }

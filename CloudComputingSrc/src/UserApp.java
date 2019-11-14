@@ -70,10 +70,20 @@ public class UserApp {
 
 	public static int constructIndicies()
 	{
-		 int selection = -1;
-        // let hadoop construct the indicies first..
-        System.out.println("Engine was loaded and ");
-        System.out.println("Inverted indicies were constructed successfully!\n");
+		int selection = -1;
+		System.out.println("Please wait while the Inverted Indicies are constructed...");
+        boolean initialized = hadoopServ.initialize();
+        if(initialized)
+        {
+        	System.out.println("Engine was loaded and ");
+        	System.out.println("Inverted indicies were constructed successfully!\n");
+        }
+        else
+        {
+        	System.out.println("Unable to construct the Inverted Indicies.");
+        	System.out.println("Please try again or press 0 to quit.\n");
+        	return -1;
+        }
         while (selection != 0) {
             System.out.println();
             System.out.println("Your options: ");
@@ -170,7 +180,7 @@ public class UserApp {
 		 }
          System.out.println("Please wait while your results are gathered...\n");
 		 ArrayList<String> results = hadoopServ.getTopN(n);
-		 if(results == null)
+		 if(results == null || results.size() == 0)
 		 {
 			 System.out.println("Unable to get the Top-" + n + " results.");
 		 }

@@ -40,8 +40,6 @@ public class HadoopThread extends Thread
 				{
 					//set response to fail
 					response = new Envelope("FAIL");
-	// need to update hadoop.sh before letting this go thorugh
-					/*
 					System.out.println("Initializing the inverted indices..");
 					try {
 						// below code is used to execute a script which runs the hadoop program
@@ -55,7 +53,6 @@ public class HadoopThread extends Thread
 					} catch (InterruptedException e) {
 						System.out.println(e);
 					}
-					*/
 					output.writeObject(response); //ouput either done or fail
 				}
 				else if(message.getMessage().equals("SEARCH"))
@@ -97,9 +94,7 @@ public class HadoopThread extends Thread
 						try {
 							// below code is used to execute a script which runs the hadoop program
 							String[] cmd = {"sh", "hadoopTopN.sh", Integer.toString(num)};
-							// for top n, need to do export TERMS=num terms to string
 							Process p = Runtime.getRuntime().exec(cmd);
-							p = Runtime.getRuntime().exec(cmd);
 							p.waitFor();
 							System.out.println("Results in!");
 							ArrayList<String> results = topN(num);
@@ -136,7 +131,7 @@ public class HadoopThread extends Thread
 		String results = "";
 		BufferedReader br = null;
 		String line = "";
-		File file = new File("SearchResults");
+		File file = new File("SearchData/searchResults");
 		int counter = 0;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -181,17 +176,20 @@ public class HadoopThread extends Thread
 		ArrayList<String> results = new ArrayList<String>(num);
 		BufferedReader br = null;
 		String line = "";
-		File file = new File("TopNResults");
+		File file = new File("TopNData/TopNResults");
 		try {
 			br = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
+			System.out.println("FILE NOT FOUND");
 			return null;
 		}
 		try {
 			line = br.readLine();
 		} catch (IOException e) {
 			System.out.println(e);
+			System.out.println("No data in file");
+			return null;
 		}
 		while(line != null)
 		{
@@ -199,7 +197,6 @@ public class HadoopThread extends Thread
 			try {
 				line = br.readLine();
 			} catch (IOException e) {
-
 			}
 		}
 		try {
