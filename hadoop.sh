@@ -1,4 +1,5 @@
 rm -r InvertedIndexData/collectedResults5
+hadoop fs -rm -r InvertedIndexData
 mkdir InvertedIndexData
 hadoop fs -rm -r output71
 export PATH=${JAVA_HOME}/bin:${PATH}

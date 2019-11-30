@@ -12,7 +12,7 @@ public class DocTermPair
   // not sure if this should be text or a integer?
   private Text term = new Text();
   private IntWritable freq = new IntWritable();
-  private IntWritable doc = new IntWritable();
+  private Text doc = new Text();
   
   public DocTermPair()
   {
@@ -35,7 +35,7 @@ public class DocTermPair
 	  return this.term;
   }
   
-  public IntWritable getDoc()
+  public Text getDoc()
   {
 	  return this.doc;
   }
@@ -45,7 +45,7 @@ public class DocTermPair
 	  return this.freq;
   }
   
-  public void set(int docNum, String word, int frequency)
+  public void set(String docNum, String word, int frequency)
   {
 	  term.set(word);
 	  doc.set(docNum);

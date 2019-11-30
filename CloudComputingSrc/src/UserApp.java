@@ -72,11 +72,13 @@ public class UserApp {
 	{
 		int selection = -1;
 		System.out.println("Please wait while the Inverted Indicies are constructed...");
+		long startTime = System.currentTimeMillis();
         boolean initialized = hadoopServ.initialize();
+        long endTime = System.currentTimeMillis();
         if(initialized)
         {
-        	System.out.println("Engine was loaded and ");
-        	System.out.println("Inverted indicies were constructed successfully!\n");
+        	System.out.println("Engine was loaded and Inverted indicies were constructed successfully!");
+        	System.out.println("Total time to construct Inverted Indicies: " + ((endTime - startTime)/1000.0) + " seconds\n");
         }
         else
         {
@@ -129,6 +131,8 @@ public class UserApp {
 	{
 		boolean validInput = false;
 		String term = "";
+		long startTime = 0;
+		long endTime = 0;
 		while(!validInput)
 		{
 			System.out.print("Enter the term to search for: ");
@@ -147,7 +151,9 @@ public class UserApp {
 			}
 		}
 		System.out.println("Please wait while your results are gathered...\n");
+		startTime = System.currentTimeMillis();
 		String results = hadoopServ.search(term);
+		endTime = System.currentTimeMillis();
 		if(results == null || results.equals(""))
 		{
 			System.out.println("The term did not exist within the files");
@@ -155,7 +161,40 @@ public class UserApp {
 		else
 		{
 			System.out.println("The results were generated");
-			System.out.println(results);
+			StringTokenizer itr = new StringTokenizer(results, " \t");
+			String returnedTerm = itr.nextToken();
+			System.out.println("You searched for the term: " + returnedTerm);
+			System.out.println("Your search was completed in " + ((endTime - startTime)/1000.0) + " seconds\n");
+			int i = 1;
+			while(itr.hasMoreTokens())
+			{
+				String doc = itr.nextToken();
+				String freq = itr.nextToken();
+				String folder = "ProjectTestData";
+				int docID = getDocID(doc);
+				System.out.println("\t" + i + ". DOC ID: " + docID + "\t Folder: " + folder + "\t Document: " + doc + "\t Frequency: " + freq);
+				i++;
+			}
+		}
+	}
+	
+	public static int getDocID(String doc)
+	{
+		if(doc.equals("shakespeare.tar.gz"))
+		{
+			return 2;
+		}
+		else if(doc.equals("Hugo.tar.gz"))
+		{
+			return 1;
+		}
+		else if(doc.equals("Tolstoy.tar.gz"))
+		{
+			return 3;
+		}
+		else
+		{
+			return 0;
 		}
 	}
 
@@ -179,7 +218,10 @@ public class UserApp {
 			 input.nextLine();
 		 }
          System.out.println("Please wait while your results are gathered...\n");
+         long endTime = 0;
+         long startTime = System.currentTimeMillis();
 		 ArrayList<String> results = hadoopServ.getTopN(n);
+		 endTime = System.currentTimeMillis();
 		 if(results == null || results.size() == 0)
 		 {
 			 System.out.println("Unable to get the Top-" + n + " results.");
@@ -191,6 +233,7 @@ public class UserApp {
              {
                 System.out.println("\t" + (i+1) + ". " + results.get(i));
              }
+             System.out.println("Total time to get the results: " + ((endTime-startTime)/1000.0) + " seconds");
 		 }
 	 }
 

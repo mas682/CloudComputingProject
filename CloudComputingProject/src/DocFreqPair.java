@@ -1,16 +1,16 @@
 
 public class DocFreqPair {
 	
-	private int doc;
+	private String doc;
 	private int freq;
 	
-	public DocFreqPair(int docNum, int freqNum)
+	public DocFreqPair(String docNum, int freqNum)
 	{
 		doc = docNum;
 		freq = freqNum;
 	}
 	
-	public int getDoc()
+	public String getDoc()
 	{
 		return doc;
 	}

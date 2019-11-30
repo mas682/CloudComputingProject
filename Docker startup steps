@@ -1,0 +1,9 @@
+1. do "docker build ." when in the file with the docker file from power shell
+2. run "docker image" and get the image id...only need first 3 characters or so
+3. do "docker run -i <imageid>"... -i to get user input
+
+
+Notes:
+1. Need to set the ip address of the cluster you are connecting to, in the java UserApp line
+2. run the docker file from the UI directory
+3. On the cluster, run java RunHadoopServer
