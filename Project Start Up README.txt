@@ -9,6 +9,8 @@ copied the files to
 	docker pull mas682/cloudsproject:project
 	(the link can be found here: https://hub.docker.com/r/mas682/cloudsproject/tags)
 3. then run docker run -i mas682/cloudsproject:project
+4. the IP address is the IP address of the machine you ran java RunHadoopServer on...to get this on that machine use curl ifconfig.me
+5. The port is 8765
 
 notes:
 CloudComputingProject holds the code for the inverted indexing implementation
