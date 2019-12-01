@@ -16,6 +16,13 @@ public class UserApp {
     public static void main(String args[]) {
 		//will need to shares admins public key with server before attempting to login
 
+    	String IP = "";
+    	System.out.println("Enter the IP address to connnect to: ");
+    	IP = input.next();
+    	String port = "";
+    	System.out.println("Enter the port number");
+    	port = input.next();
+    	System.out.println();
         boolean connected = false;
 		if(args.length > 0)
 		{
@@ -28,7 +35,7 @@ public class UserApp {
 		}
 		else
 		{
-			hadoopServ = new HadoopClient("localhost", HadoopServer.SERVER_PORT);
+			hadoopServ = new HadoopClient(IP, Integer.parseInt(port));
 			connected = hadoopServ.isConnected();
 			if(!connected)
 			{

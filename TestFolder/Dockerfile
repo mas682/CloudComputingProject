@@ -1,5 +1,5 @@
 FROM openjdk:8
 WORKDIR /
 COPY /UI ./
-ENTRYPOINT java UserApp 35.185.16.240 8765
+ENTRYPOINT java UserApp
 
